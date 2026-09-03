@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amigo Fiel · Clínica Veterinária em Maceió</title>
+<meta name="description" content="Consultas, vacinas, cirurgias, exames e banho e tosa em Maceió. Atendimento com hora marcada. Agende pelo WhatsApp.">
+
+<!--
+  ATENÇÃO AO PERSONALIZAR: as tags OpenGraph abaixo são o preview que aparece
+  quando o link é colado no WhatsApp/Instagram. Crawlers de link preview NÃO
+  executam JavaScript, então estas tags precisam ser atualizadas À MÃO junto
+  com o objeto CONFIG em script.js. Não são geradas automaticamente.
+-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Amigo Fiel">
+<meta property="og:title" content="Amigo Fiel · Clínica Veterinária em Maceió">
+<meta property="og:description" content="Consultas, vacinas, cirurgias, exames e banho e tosa. Atendimento com hora marcada. Agende pelo WhatsApp.">
+<meta property="og:image" content="assets/og-capa.jpg">
+<!-- domínio ainda não definido; preencha quando o site tiver endereço próprio -->
+<meta property="og:url" content="">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Ginora Sans (títulos) é auto-hospedada; veja o @font-face no topo de styles.css
+     e a licença em assets/fontes/LICENSE-GinoraSans-OFL.txt -->
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Sprite de ícones SVG, usados em toda a página via <use href="#icon-x"> -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-pata" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="68" rx="26" ry="20"/>
+    <ellipse cx="20" cy="38" rx="12" ry="15" transform="rotate(-20 20 38)"/>
+    <ellipse cx="42" cy="18" rx="12" ry="16" transform="rotate(-8 42 18)"/>
+    <ellipse cx="66" cy="18" rx="12" ry="16" transform="rotate(8 66 18)"/>
+    <ellipse cx="84" cy="38" rx="12" ry="15" transform="rotate(22 84 38)"/>
+  </symbol>
+  <symbol id="icon-osso" viewBox="0 0 100 100">
+    <g transform="rotate(-30 50 50)">
+      <rect x="20" y="42" width="60" height="16" rx="8"/>
+      <circle cx="20" cy="42" r="11"/>
+      <circle cx="20" cy="58" r="11"/>
+      <circle cx="80" cy="42" r="11"/>
+      <circle cx="80" cy="58" r="11"/>
+    </g>
+  </symbol>
+  <symbol id="icon-coracao" viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 4 7 4c2 0 4 1.5 5 3.5C13 5.5 15 4 17 4c4 0 6.5 4.5 4.5 8.5C19 16.65 12 21 12 21Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-banho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3c0 0-6 7.5-6 11.5a6 6 0 0 0 12 0C18 10.5 12 3 12 3Z"/>
+    <path d="M9.5 15.2a2.5 2.5 0 0 0 2.5 2.3"/>
+  </symbol>
+  <symbol id="icon-hidratacao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3s6.5 7.6 6.5 12.2a6.5 6.5 0 1 1-13 0C5.5 10.6 12 3 12 3Z"/>
+    <circle cx="15.2" cy="9.5" r="1"/>
+  </symbol>
+  <symbol id="icon-tesoura" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/>
+    <line x1="20" y1="4" x2="8.1" y2="15.9"/><line x1="14.4" y1="14.4" x2="20" y2="20"/><line x1="8.1" y1="8.1" x2="11.5" y2="11.5"/>
+  </symbol>
+  <symbol id="icon-carro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 11l1.4-4.2A2 2 0 0 1 8.3 5.4h7.4a2 2 0 0 1 1.9 1.4L19 11"/>
+    <rect x="3" y="11" width="18" height="5.5" rx="2"/>
+    <circle cx="7.5" cy="16.8" r="1.6"/><circle cx="16.5" cy="16.8" r="1.6"/>
+  </symbol>
+  <symbol id="icon-orelha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8.2 3.3c4.2-.6 7.6 2.6 7.6 6.8 0 3-2 5-2 8a3.4 3.4 0 0 1-6.8 0c0-2 1.1-3.2 1.1-5.4a4.4 4.4 0 0 1 .1-9.4Z"/>
+  </symbol>
+  <symbol id="icon-consulta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 3v5.5a4.5 4.5 0 0 0 9 0V3"/>
+    <path d="M7 3H5.5M16 3h1.5"/>
+    <path d="M20 12.5V14a6.5 6.5 0 0 1-13 0v-1.2"/>
+    <circle cx="20" cy="10.3" r="2.2"/>
+  </symbol>
+  <symbol id="icon-vacina" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16.5 3.5l4 4"/>
+    <path d="M15 5l4 4"/>
+    <path d="M13 7l-8.5 8.5a2 2 0 0 0 0 2.8l.2.2a2 2 0 0 0 2.8 0L16 10Z"/>
+    <line x1="9" y1="11" x2="11" y2="13"/>
+    <line x1="6.5" y1="13.5" x2="8.5" y2="15.5"/>
+  </symbol>
+  <symbol id="icon-cirurgia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 20l7-7"/>
+    <path d="M11 13l6.5-6.5a2 2 0 0 0 0-2.8l-.2-.2a2 2 0 0 0-2.8 0L8 10"/>
+    <line x1="14" y1="6" x2="18" y2="10"/>
+  </symbol>
+  <symbol id="icon-exame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="4" width="12" height="17" rx="2"/>
+    <path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+    <line x1="9" y1="11.5" x2="15" y2="11.5"/>
+    <line x1="9" y1="15.5" x2="13" y2="15.5"/>
+  </symbol>
+  <symbol id="icon-internacao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20.5s-6.8-4.2-9.2-8.2C1 8.7 3.3 4.5 7 4.5c1.9 0 3.7 1.4 5 3.3 1.3-1.9 3.1-3.3 5-3.3 3.7 0 6 4.2 4.2 7.8-2.4 4-9.2 8.2-9.2 8.2Z"/>
+    <path d="M4.5 12h2.5l1.5 3 2.5-6.5 1.5 3.5h5.5"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6"/></symbol>
+  <symbol id="icon-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.3-.5.1-1 .3-3.4-.7-2.9-1.1-4.7-4-4.9-4.2-.1-.2-1.1-1.5-1.1-2.9 0-1.4.7-2.1 1-2.4.2-.3.6-.3.8-.3h.5c.2 0 .4-.1.7.5.2.6.8 2 .9 2.1.1.1.1.3 0 .5-.1.2-.1.3-.3.5-.1.2-.3.4-.4.5-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1.1.9 1.9 1.2 2.2 1.4.3.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.3.1 1.7.8 1.9.9.3.1.5.2.5.3.1.1.1.7-.1 1.4Z"/></symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1"/></symbol>
+  <symbol id="icon-facebook" viewBox="0 0 24 24" fill="currentColor"><path d="M15 3.5h-2.2A3.8 3.8 0 0 0 9 7.3V10H7v3h2v7.5h3V13h2.4l.4-3H12V7.6c0-.6.4-1.1 1-1.1h2Z"/></symbol>
+  <symbol id="icon-telefone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8Z"/></symbol>
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.7 7-12.2A7 7 0 1 0 5 9.8C5 15.3 12 22 12 22Z"/><circle cx="12" cy="9.8" r="2.4"/></symbol>
+  <symbol id="icon-relogio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3.3 2"/></symbol>
+  <symbol id="icon-estrela" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.5l-6.1 3.5 1.5-6.8-5.2-4.7 6.9-.7Z"/></symbol>
+  <symbol id="icon-busca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.4" y2="16.4"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+  <symbol id="icon-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></symbol>
+  <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M10.2 8.3l5.6 3.7-5.6 3.7Z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+</svg>
+
+<a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ===================== FAIXA DE AVISOS ===================== -->
+<div class="faixa-promo" aria-label="Avisos">
+  <div class="container faixa-promo__trilho" id="js-promo-trilho"></div>
+</div>
+
+<!-- ===================== CABEÇALHO ===================== -->
+<header class="cabecalho" id="topo">
+  <div class="container cabecalho__linha">
+    <a href="#topo" class="marca">
+      <img class="marca__logo js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
+    </a>
+
+    <nav class="nav" id="js-nav">
+      <button class="nav__fechar" id="js-nav-fechar" aria-label="Fechar menu">
+        <svg width="22" height="22"><use href="#icon-fechar"/></svg>
+      </button>
+      <ul>
+        <li><a href="#topo" class="ativo">Início</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#profissionais">Equipe</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#localizacao">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="cabecalho__acoes">
+      <a href="#" id="js-telefone-header" class="cabecalho__telefone">
+        <svg width="16" height="16"><use href="#icon-telefone"/></svg>
+        <span>(82) 3033-1234</span>
+      </a>
+      <a href="#" class="botao botao-laranja botao--sm js-zap" data-zap="header">
+        <svg width="16" height="16"><use href="#icon-pata"/></svg>
+        Agendar
+      </a>
+      <button class="nav__abrir" id="js-nav-abrir" aria-label="Abrir menu" aria-expanded="false" aria-controls="js-nav">
+        <svg width="24" height="24"><use href="#icon-menu"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav__fundo" id="js-nav-fundo"></div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <svg class="pata pata--1" width="70" height="70" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata pata--2" width="46" height="46" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata osso osso--hero-1" width="52" height="52" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <svg class="pata osso osso--hero-2" width="38" height="38" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <div class="hero__blob" aria-hidden="true"></div>
+
+    <div class="container hero__grade">
+      <div class="hero__texto">
+        <p class="selo-loja">
+          <svg width="15" height="15"><use href="#icon-consulta"/></svg>
+          Atendimento com hora marcada
+        </p>
+        <h1 class="hero__titulo">
+          <img class="hero__logo js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
+        </h1>
+        <p class="hero__descricao">
+          Consultas, vacinas, cirurgias e banho e tosa num só lugar, na
+          <span class="destaque-teal-solido">Clínica Amigo Fiel</span>. Equipe
+          que trata seu pet como se fosse <span class="destaque-teal-solido">da família</span>.
+        </p>
+        <div class="hero__acoes">
+          <a href="#" class="botao botao-laranja js-zap" data-zap="hero">
+            <svg width="17" height="17"><use href="#icon-pata"/></svg>
+            Agendar horário
+          </a>
+          <a href="#galeria" class="botao botao-contorno">
+            <svg width="17" height="17"><use href="#icon-play"/></svg>
+            Ver fotos
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__foto-caixa">
+        <div class="blob blob--hero-foto" aria-hidden="true"></div>
+        <img class="foto-recortada foto-recortada--hero" src="assets/fotos/hero-cao-gato.jpg"
+             alt="Gato e cachorro lado a lado, olhando na mesma direção">
+      </div>
+    </div>
+  </section>
+
+  <!-- divisor em onda: creme (hero) entrando no bloco laranja -->
+  <div class="onda onda--grande" aria-hidden="true">
+    <svg viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <path d="M0,100 L0,70 C 200,10 400,90 600,50 C 800,10 1000,90 1200,45 L1200,100 Z" fill="var(--laranja)"/>
+    </svg>
+  </div>
+
+  <!-- ===================== FAIXA DE SERVIÇOS ===================== -->
+  <section class="servicos secao-laranja" id="servicos" aria-label="Nossos serviços">
+    <div class="container">
+      <ul class="servicos__grade reveal" id="js-servicos"></ul>
+    </div>
+  </section>
+
+  <!-- ===================== SOBRE ===================== -->
+  <section class="sobre secao-laranja" id="sobre">
+    <svg class="pata pata--3" width="54" height="54" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata pata--3b" width="40" height="40" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata osso osso--sobre-1" width="44" height="44" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <svg class="pata osso osso--sobre-2" width="34" height="34" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <div class="container sobre__grade">
+      <div class="sobre__foto-caixa reveal reveal--esquerda">
+        <div class="blob blob--sobre" aria-hidden="true"></div>
+        <img class="foto-recortada foto-recortada--sobre" src="assets/fotos/sobre-tosadora.jpg"
+             alt="Tosadora cuidando de um cão pequeno em cima da mesa de banho e tosa">
+      </div>
+
+      <div class="sobre__texto reveal reveal--direita">
+        <p class="eyebrow eyebrow--laranja">Sobre o Amigo Fiel <svg width="14" height="14"><use href="#icon-coracao"/></svg></p>
+        <h2 class="titulo-secao titulo-secao--esquerda">
+          Cuidado clínico com <span class="destaque-teal">carinho</span>
+        </h2>
+        <p>
+          Somos uma clínica veterinária completa: consultas, vacinas, cirurgias
+          e exames na mesma estrutura, sem precisar rodar a cidade. E pro dia a
+          dia do seu pet, banho e tosa com preço combinado antes.
+        </p>
+
+        <ul class="checklist" id="js-checklist">
+          <li><span class="checklist__icone checklist__icone--teal"><svg width="13" height="13"><use href="#icon-check"/></svg></span>Consulta com hora marcada</li>
+          <li><span class="checklist__icone checklist__icone--laranja"><svg width="13" height="13"><use href="#icon-check"/></svg></span>Cirurgia e exames no local</li>
+          <li><span class="checklist__icone checklist__icone--teal"><svg width="13" height="13"><use href="#icon-check"/></svg></span>Banho e tosa com preço fixo</li>
+          <li><span class="checklist__icone checklist__icone--laranja"><svg width="13" height="13"><use href="#icon-check"/></svg></span>Equipe experiente</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- divisor em onda: laranja passando direto pro azul (teal), sem
+       tira creme no meio, as duas camadas usam a mesma curva, então
+       encaixam sem deixar frincha -->
+  <div class="onda onda--grande" aria-hidden="true">
+    <svg viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <path d="M0,0 L1200,0 L1200,50 C 1000,15 800,95 600,55 C 400,15 200,95 0,50 Z" fill="var(--laranja)"/>
+      <path d="M0,100 L1200,100 L1200,50 C 1000,15 800,95 600,55 C 400,15 200,95 0,50 Z" fill="var(--teal)"/>
+    </svg>
+  </div>
+
+  <!-- ===================== O QUE OFERECEMOS ===================== -->
+  <section class="oferecemos secao-teal">
+    <div class="container">
+      <svg class="pata pata--esquerda-1" width="56" height="56" aria-hidden="true"><use href="#icon-pata"/></svg>
+      <svg class="pata pata--direita-1" width="46" height="46" aria-hidden="true"><use href="#icon-pata"/></svg>
+      <svg class="pata osso osso--oferecemos-1" width="46" height="46" aria-hidden="true"><use href="#icon-osso"/></svg>
+      <svg class="pata osso osso--oferecemos-2" width="36" height="36" aria-hidden="true"><use href="#icon-osso"/></svg>
+      <p class="eyebrow eyebrow--laranja reveal" style="text-align:center">Nossos serviços</p>
+      <h2 class="titulo-secao titulo-secao--centro reveal">O que a gente <span class="destaque-teal">oferece</span></h2>
+
+      <div class="oferecemos__carrossel">
+        <div class="oferecemos__coluna-texto reveal reveal--esquerda">
+          <div class="oferecemos__trilho" id="js-oferecemos-trilho"></div>
+          <div class="oferecemos__pontos" id="js-oferecemos-pontos"></div>
+        </div>
+        <div class="oferecemos__coluna-imagem reveal reveal--direita">
+          <div class="blob blob--oferece" aria-hidden="true"></div>
+          <div class="oferece-imagem-caixa" id="js-oferecemos-imagens"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- divisor em onda: bloco azul voltando pro creme -->
+  <div class="onda" aria-hidden="true">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+      <path d="M0,0 L0,18 C 200,45 400,12 600,30 C 800,48 1000,12 1200,32 L1200,0 Z" fill="var(--teal)"/>
+    </svg>
+  </div>
+
+  <!-- ===================== NOSSOS PROFISSIONAIS ===================== -->
+  <section class="profissionais" id="profissionais">
+    <svg class="pata pata--4" width="60" height="60" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata pata--4b" width="42" height="42" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata osso osso--prof-1" width="48" height="48" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <svg class="pata osso osso--prof-2" width="34" height="34" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <div class="container">
+      <p class="eyebrow eyebrow--laranja reveal" style="text-align:center">Quem cuida do seu pet</p>
+      <h2 class="titulo-secao titulo-secao--centro reveal">Nossos <span class="destaque-teal">profissionais</span></h2>
+
+      <ul class="profissionais__grade" id="js-profissionais"></ul>
+
+      <div class="profissionais__cta reveal">
+        <a href="#" class="botao botao-laranja botao--grande js-zap" data-zap="profissionais" id="js-zap-profissionais">
+          <svg width="18" height="18"><use href="#icon-whatsapp"/></svg>
+          Agendar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- divisor em onda: creme entrando no bloco laranja da galeria -->
+  <div class="onda onda--grande" aria-hidden="true">
+    <svg viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <path d="M0,100 L0,70 C 200,10 400,90 600,50 C 800,10 1000,90 1200,45 L1200,100 Z" fill="var(--laranja)"/>
+    </svg>
+  </div>
+
+  <!-- ===================== GALERIA (fotos em bloco, no lugar do banner de venda) ===================== -->
+  <section class="galeria secao-laranja" id="galeria">
+    <svg class="pata pata--galeria-1" width="52" height="52" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata pata--galeria-2" width="40" height="40" aria-hidden="true"><use href="#icon-pata"/></svg>
+    <svg class="pata osso osso--galeria-1" width="42" height="42" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <svg class="pata osso osso--galeria-2" width="32" height="32" aria-hidden="true"><use href="#icon-osso"/></svg>
+    <div class="container">
+      <p class="eyebrow eyebrow--teal reveal" style="text-align:center">Trabalho recente</p>
+      <h2 class="titulo-secao titulo-secao--centro reveal">Alguns dos nossos <span class="destaque-teal">trabalhos</span></h2>
+
+      <div class="galeria__carrossel reveal reveal--escala">
+        <div class="galeria__viewport" id="js-galeria-viewport">
+          <div class="galeria__trilho" id="js-galeria-trilho"></div>
+        </div>
+      </div>
+
+      <p class="galeria__rodape reveal">
+        <a href="#" class="link-discreto" id="js-galeria-instagram" target="_blank" rel="noopener">
+          Ver mais fotos no Instagram
+          <svg width="15" height="15"><use href="#icon-seta"/></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- divisor em onda: bloco laranja da galeria voltando pro creme -->
+  <div class="onda onda--grande" aria-hidden="true">
+    <svg viewBox="0 0 1200 100" preserveAspectRatio="none">
+      <path d="M0,0 L0,30 C 200,90 400,10 600,55 C 800,95 1000,15 1200,50 L1200,0 Z" fill="var(--laranja)"/>
+    </svg>
+  </div>
+
+  <!-- ===================== DEPOIMENTOS ===================== -->
+  <section class="depoimentos">
+    <div class="container">
+      <div class="depoimentos__cabecalho reveal">
+        <p class="depoimentos__nota" id="js-nota-google"></p>
+        <p class="eyebrow eyebrow--laranja" style="justify-content:center">O que dizem</p>
+        <h2 class="titulo-secao titulo-secao--centro">Quem já <span class="destaque-teal">veio</span></h2>
+      </div>
+
+      <div class="depoimentos__caixa reveal reveal--escala reveal-atraso-1">
+        <div class="depoimentos__trilho" id="js-depoimentos"></div>
+        <div class="depoimentos__pontos" id="js-depoimentos-pontos"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LOCALIZAÇÃO ===================== -->
+  <section class="localizacao" id="localizacao">
+    <div class="container localizacao__grade">
+      <div class="localizacao__mapa-caixa reveal reveal--esquerda">
+        <iframe id="js-mapa" title="Mapa até a Amigo Fiel" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <div class="localizacao__info reveal reveal--direita">
+        <p class="eyebrow eyebrow--laranja">Venha nos visitar</p>
+        <h2 class="titulo-secao titulo-secao--esquerda">Onde <span class="destaque-teal">estamos</span></h2>
+
+        <ul class="localizacao__contato">
+          <li>
+            <span class="localizacao__icone"><svg width="17" height="17"><use href="#icon-pin"/></svg></span>
+            <span id="js-endereco"></span>
+          </li>
+          <li>
+            <span class="localizacao__icone"><svg width="17" height="17"><use href="#icon-telefone"/></svg></span>
+            <a href="#" id="js-telefone"></a>
+          </li>
+        </ul>
+
+        <h3 class="localizacao__subtitulo">
+          <svg width="16" height="16"><use href="#icon-relogio"/></svg>
+          Horário de atendimento
+        </h3>
+        <ul class="horarios" id="js-horarios"></ul>
+
+        <a href="#" class="botao botao-teal" id="js-link-mapa" target="_blank" rel="noopener">
+          <svg width="17" height="17"><use href="#icon-pin"/></svg>
+          Como chegar
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <svg class="pata pata--rodape" width="150" height="150" aria-hidden="true"><use href="#icon-pata"/></svg>
+  <svg class="pata osso osso--rodape" width="150" height="150" aria-hidden="true"><use href="#icon-osso"/></svg>
+  <div class="container rodape__grade">
+    <div class="rodape__coluna rodape__marca">
+      <a href="#topo" class="marca marca--rodape">
+        <img class="marca__logo marca__logo--rodape js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
+      </a>
+      <p id="js-slogan-rodape"></p>
+      <div class="rodape__redes">
+        <a href="#" id="js-rodape-instagram" aria-label="Instagram" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#icon-instagram"/></svg></a>
+        <a href="#" id="js-rodape-facebook" aria-label="Facebook" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#icon-facebook"/></svg></a>
+        <a href="#" id="js-rodape-whatsapp" aria-label="WhatsApp" class="js-zap" data-zap="rodape"><svg width="18" height="18"><use href="#icon-whatsapp"/></svg></a>
+      </div>
+    </div>
+
+    <nav class="rodape__coluna">
+      <h4>Links rápidos</h4>
+      <ul>
+        <li><a href="#topo">Início</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#profissionais">Equipe</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#localizacao">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="rodape__coluna">
+      <h4>Nossos serviços</h4>
+      <ul id="js-rodape-servicos"></ul>
+    </div>
+
+    <div class="rodape__coluna">
+      <h4>Horários</h4>
+      <ul class="horarios horarios--rodape" id="js-rodape-horarios"></ul>
+    </div>
+  </div>
+
+  <div class="rodape__base">
+    <p>&copy; <span id="js-ano"></span> <span id="js-nome-copyright">Amigo Fiel</span>. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<!-- ===================== BARRA FIXA WHATSAPP (mobile) ===================== -->
+<div class="barra-zap">
+  <a href="#" class="botao botao-laranja js-zap" data-zap="mobile">
+    <svg width="18" height="18"><use href="#icon-whatsapp"/></svg>
+    Falar no WhatsApp
+  </a>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

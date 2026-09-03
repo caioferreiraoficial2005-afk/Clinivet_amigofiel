@@ -1,0 +1,31 @@
+Pasta de assets · Amigo Fiel (template)
+=====================================
+
+fontes/
+  Ginora Sans (Regular, Semi Bold, Bold), fonte de título do template.
+  Licença OFL, uso comercial livre, licença completa em
+  fontes/LICENSE-GinoraSans-OFL.txt. Carregada via @font-face no topo
+  do styles.css, não precisa de internet pra funcionar.
+
+fotos/
+  As 5 fotos usadas hoje (hero, sobre e as 3 da galeria) são fotos de
+  banco gratuito (Pexels, licença livre para uso comercial, sem
+  atribuição obrigatória). Servem pra o site não ficar com "cara de
+  placeholder" enquanto você não manda as fotos reais da Amigo Fiel,
+  mas são de outro lugar, não do seu. Troque assim que tiver fotos
+  próprias:
+    1. hero-cao-gato.jpg       (seção topo do site)
+    2. sobre-tosadora.jpg      (seção "Sobre")
+    3. galeria-banho.jpg       (galeria, 1º quadro)
+    4. galeria-resultado.jpg   (galeria, quadro do meio, maior)
+    5. galeria-detalhe.jpg     (galeria, 3º quadro)
+
+  Pra trocar: substitua o arquivo mantendo o mesmo nome, ou edite o
+  caminho em index.html (hero e sobre) e em CONFIG.galeria dentro de
+  script.js (as 3 fotos da galeria).
+
+Capa de compartilhamento (WhatsApp/Instagram):
+  og-capa.jpg ainda não existe nesta pasta. Precisa de uma imagem
+  1200x630px pra completar a tag <meta property="og:image"> no
+  index.html, isso é o que aparece quando o link é colado numa
+  conversa.
