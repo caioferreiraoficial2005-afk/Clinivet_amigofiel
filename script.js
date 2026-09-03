@@ -17,8 +17,10 @@ const CONFIG = {
   telefone: "(82) 98847-0300",
   whatsapp: "5582988470300", // DDI + DDD + número, só dígitos
   endereco: "Rua da Codeal, 36, Tabuleiro do Martins, Maceió/AL, 57081-071",
-  mapaEmbed: "https://www.google.com/maps?q=Rua+da+Codeal,+36,+Tabuleiro+do+Martins,+Maceió+-+AL&output=embed",
-  mapaLink: "https://maps.google.com/?q=Rua+da+Codeal,+36,+Tabuleiro+do+Martins,+Maceió+-+AL",
+  // coordenadas exatas (não busca por texto): o texto do endereço geocodifica
+  // pra um ponto genérico em Santa Lúcia, bairro errado
+  mapaEmbed: "https://www.google.com/maps?q=-9.5656293,-35.7484559&output=embed",
+  mapaLink: "https://maps.google.com/?q=-9.5656293,-35.7484559",
   instagram: "https://instagram.com/clinvetamigofiel",
   facebook: null, // não encontramos uma página oficial confirmada. Preencha se tiver.
   // logo com o nome já escrito nela (mandada pelo cliente). Cabeçalho e
@@ -130,15 +132,23 @@ const CONFIG = {
     }
   ],
 
-  // EXEMPLO: confirme o horário real de atendimento da Amigo Fiel
-  // antes de publicar (o Google mostra só "abre às 14:00" no momento
-  // da busca, não achamos a semana completa).
+  // Horário real, conferido no Perfil da Empresa no Google. A clínica
+  // fecha pro almoço, por isso cada dia tem duas faixas (periodos
+  // vazio = fechado o dia inteiro).
   horarios: [
-    { dia: "Segunda a Sexta", hora: "08:00 às 18:00" },
-    { dia: "Sábado",          hora: "08:00 às 14:00" },
-    { dia: "Domingo",         hora: "Fechado" }
+    { dia: "Segunda a Sexta", periodos: ["08:00 às 12:00", "14:00 às 18:00"] },
+    { dia: "Sábado",          periodos: ["08:00 às 12:00", "14:00 às 17:00"] },
+    { dia: "Domingo",         periodos: [] }
   ]
 };
+
+/* =========================================================
+   TEMPOS DE TRANSIÇÃO (ms)
+   ========================================================= */
+// cada texto do carrossel "O que a gente oferece" tem uns 40 palavras,
+// perto de 10s de leitura. 6000 dá tempo de ler o primeiro parágrafo
+// sem pressa; teste com 2000 se quiser um ritmo mais rápido.
+const OFERECE_INTERVALO = 6000;
 
 /* =========================================================
    MENSAGENS DE WHATSAPP POR CONTEXTO
@@ -237,10 +247,33 @@ function renderOferecemos() {
     });
   });
 
-  const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!reduzMovimento && CONFIG.oferecemos.length > 1) {
+  const botaoAnterior = document.getElementById("js-oferece-anterior");
+  const botaoProximo = document.getElementById("js-oferece-proximo");
+  botaoAnterior?.addEventListener("click", () => {
+    irParaOferece((ofereceAtual - 1 + CONFIG.oferecemos.length) % CONFIG.oferecemos.length);
     reiniciarAutoAvancoOferece();
-  }
+  });
+  botaoProximo?.addEventListener("click", () => {
+    irParaOferece((ofereceAtual + 1) % CONFIG.oferecemos.length);
+    reiniciarAutoAvancoOferece();
+  });
+
+  ligarPausaOferece();
+  reiniciarAutoAvancoOferece();
+}
+
+/** Pausa o avanço automático enquanto o mouse ou o foco do teclado
+    estiver em cima do carrossel, senão não dá tempo de terminar de
+    ler o texto. Retoma quando o cursor/foco sai. */
+function ligarPausaOferece() {
+  const carrossel = document.querySelector(".oferecemos__carrossel");
+  if (!carrossel) return;
+  carrossel.addEventListener("mouseenter", () => clearInterval(ofereceTimer));
+  carrossel.addEventListener("mouseleave", () => reiniciarAutoAvancoOferece());
+  carrossel.addEventListener("focusin", () => clearInterval(ofereceTimer));
+  carrossel.addEventListener("focusout", e => {
+    if (!carrossel.contains(e.relatedTarget)) reiniciarAutoAvancoOferece();
+  });
 }
 
 function irParaOferece(indice) {
@@ -258,9 +291,11 @@ function irParaOferece(indice) {
 
 function reiniciarAutoAvancoOferece() {
   clearInterval(ofereceTimer);
+  const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduzMovimento || CONFIG.oferecemos.length <= 1) return;
   ofereceTimer = setInterval(() => {
     irParaOferece((ofereceAtual + 1) % CONFIG.oferecemos.length);
-  }, 2000);
+  }, OFERECE_INTERVALO);
 }
 
 /* =========================================================
@@ -457,7 +492,10 @@ function reiniciarAutoAvanco() {
 }
 
 function renderHorarios() {
-  const html = CONFIG.horarios.map(h => `<li><span>${h.dia}</span><span>${h.hora}</span></li>`).join("");
+  const html = CONFIG.horarios.map(h => {
+    const hora = h.periodos.length ? h.periodos.join("<br>") : "Fechado";
+    return `<li><span>${h.dia}</span><span>${hora}</span></li>`;
+  }).join("");
   document.getElementById("js-horarios").innerHTML = html;
   document.getElementById("js-rodape-horarios").innerHTML = html;
 }
@@ -541,22 +579,34 @@ function iniciarMenuMobile() {
   });
 }
 
-/* marca o link ativo do menu conforme a seção visível */
+/* marca o link ativo do menu conforme a seção visível. #galeria não
+   tem link no menu de propósito, quando ela cruza a faixa o menu só
+   mantém o último item ativo. */
 function iniciarNavAtiva() {
-  const secoes = ["topo", "servicos", "profissionais", "sobre", "localizacao"]
+  const secoes = ["inicio", "servicos", "profissionais", "sobre", "localizacao"]
     .map(id => document.getElementById(id))
     .filter(Boolean);
   const links = document.querySelectorAll(".nav a");
 
   if (!("IntersectionObserver" in window) || secoes.length === 0) return;
 
+  // guarda o conjunto de seções visíveis no momento: quando duas cruzam
+  // a faixa ao mesmo tempo, o IntersectionObserver dispara uma entrada
+  // pra cada uma, e sem isso a última da lista sempre vencia, mesmo
+  // quando não era a mais alta na tela
+  const visiveis = new Set();
+
   const observador = new IntersectionObserver(entradas => {
-    entradas.forEach(entrada => {
-      if (entrada.isIntersecting) {
-        const id = entrada.target.id;
-        links.forEach(a => a.classList.toggle("ativo", a.getAttribute("href") === `#${id}`));
-      }
+    entradas.forEach(e => {
+      e.isIntersecting ? visiveis.add(e.target) : visiveis.delete(e.target);
     });
+
+    const topo = [...visiveis]
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
+
+    if (topo) {
+      links.forEach(a => a.classList.toggle("ativo", a.getAttribute("href") === `#${topo.id}`));
+    }
   }, { rootMargin: "-40% 0px -50% 0px" });
 
   secoes.forEach(sec => observador.observe(sec));

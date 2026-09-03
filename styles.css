@@ -381,10 +381,16 @@ img.foto-recortada, img.foto-simples{
   position:relative; z-index:1;
   display:flex; flex-direction:column; gap:36px;
 }
-.hero__titulo{ margin: 4px 0 20px; }
-.hero__logo{ width: min(100%, 480px); height:auto; }
+.hero__logo{ width: min(100%, 480px); height:auto; margin: 4px 0 20px; }
+/* .hero__descricao agora é o <h1> da página (só a imagem da logo segue
+   como está, decisão de design). As regras abaixo cancelam o estilo
+   padrão de heading (fonte de título, negrito, letter-spacing) pra
+   ficar idêntico ao parágrafo de texto normal que era antes, visualmente
+   nada muda, só a semântica */
 .hero__descricao{
   max-width: 44ch; font-size:1.08rem; margin-bottom:26px;
+  font-family: var(--fonte-corpo); font-weight:400; letter-spacing:normal;
+  text-wrap: wrap;
 }
 .hero__acoes{ display:flex; flex-wrap:wrap; align-items:center; gap:22px; }
 
@@ -542,11 +548,21 @@ img.foto-recortada, img.foto-simples{
 .oferece-slide h3{ font-family:var(--fonte-display); font-weight:600; font-size:clamp(1.6rem, 2.6vw, 2.1rem); margin-bottom:12px; }
 .oferece-slide p{ font-size:1.02rem; max-width:44ch; line-height:1.6; }
 
-.oferecemos__pontos{ display:flex; gap:8px; margin-top:24px; }
+.oferecemos__controles{ display:flex; align-items:center; gap:16px; margin-top:24px; }
+.oferecemos__pontos{ display:flex; gap:8px; }
 .oferecemos__pontos button{
   width:9px; height:9px; border-radius:50%; background: rgba(58,42,31,.25);
 }
 .oferecemos__pontos button.ativo{ background: var(--laranja); width:22px; border-radius:6px; }
+
+.oferecemos__seta{
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  width:34px; height:34px; border-radius:50%;
+  border:1.5px solid rgba(58,42,31,.25); color: var(--grafite);
+  transition: background .15s ease, border-color .15s ease;
+}
+.oferecemos__seta:hover{ background: rgba(58,42,31,.08); border-color: rgba(58,42,31,.4); }
+.oferecemos__seta--anterior svg{ transform: scaleX(-1); }
 
 .oferecemos__coluna-imagem{ position:relative; display:flex; }
 .blob--oferece{ inset: 6% -4% -4% 6%; background: var(--amarelo); opacity:.6; }
@@ -719,10 +735,12 @@ img.foto-recortada, img.foto-simples{
 .localizacao__subtitulo{ display:flex; align-items:center; gap:8px; font-size:1.05rem; font-weight:600; font-family:var(--fonte-display); margin-bottom:14px; color: var(--teal-escuro); }
 .horarios{ margin-bottom: 28px; border-top:1px solid var(--linha); }
 .horarios li{
-  display:flex; justify-content:space-between; padding: 12px 0;
+  display:flex; justify-content:space-between; align-items:flex-start; padding: 12px 0;
   border-bottom:1px solid var(--linha); font-weight:600; color:var(--tinta);
 }
-.horarios li span:last-child{ color: var(--grafite); font-weight:400; }
+/* quando tem 2 faixas (fecha pro almoço), vêm com <br> entre elas,
+   texto alinhado à direita pra ficar legível empilhado */
+.horarios li span:last-child{ color: var(--grafite); font-weight:400; text-align:right; line-height:1.5; }
 
 @media (min-width: 900px){
   .localizacao__grade{ flex-direction:row; gap:56px; align-items:stretch; }

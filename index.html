@@ -6,6 +6,12 @@
 <title>Amigo Fiel · Clínica Veterinária em Maceió</title>
 <meta name="description" content="Consultas, vacinas, cirurgias, exames e banho e tosa em Maceió. Atendimento com hora marcada. Agende pelo WhatsApp.">
 
+<!-- DEMONSTRAÇÃO: a clínica ainda não assinou contrato, essa tag impede
+     o Google de indexar/listar a página (o link direto continua
+     funcionando normalmente, é assim que a demo é mostrada). REMOVER
+     esta tag quando o contrato for fechado e o site for ao ar oficialmente. -->
+<meta name="robots" content="noindex, nofollow">
+
 <!--
   ATENÇÃO AO PERSONALIZAR: as tags OpenGraph abaixo são o preview que aparece
   quando o link é colado no WhatsApp/Instagram. Crawlers de link preview NÃO
@@ -135,7 +141,7 @@
         <svg width="22" height="22"><use href="#icon-fechar"/></svg>
       </button>
       <ul>
-        <li><a href="#topo" class="ativo">Início</a></li>
+        <li><a href="#inicio" class="ativo">Início</a></li>
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#profissionais">Equipe</a></li>
         <li><a href="#sobre">Sobre</a></li>
@@ -163,7 +169,7 @@
 <main id="conteudo">
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero">
+  <section class="hero" id="inicio">
     <svg class="pata pata--1" width="70" height="70" aria-hidden="true"><use href="#icon-pata"/></svg>
     <svg class="pata pata--2" width="46" height="46" aria-hidden="true"><use href="#icon-pata"/></svg>
     <svg class="pata osso osso--hero-1" width="52" height="52" aria-hidden="true"><use href="#icon-osso"/></svg>
@@ -176,14 +182,12 @@
           <svg width="15" height="15"><use href="#icon-consulta"/></svg>
           Atendimento com hora marcada
         </p>
-        <h1 class="hero__titulo">
-          <img class="hero__logo js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
-        </h1>
-        <p class="hero__descricao">
+        <img class="hero__logo js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
+        <h1 class="hero__descricao">
           Consultas, vacinas, cirurgias e banho e tosa num só lugar, na
           <span class="destaque-teal-solido">Clínica Amigo Fiel</span>. Equipe
           que trata seu pet como se fosse <span class="destaque-teal-solido">da família</span>.
-        </p>
+        </h1>
         <div class="hero__acoes">
           <a href="#" class="botao botao-laranja js-zap" data-zap="hero">
             <svg width="17" height="17"><use href="#icon-pata"/></svg>
@@ -275,7 +279,15 @@
       <div class="oferecemos__carrossel">
         <div class="oferecemos__coluna-texto reveal reveal--esquerda">
           <div class="oferecemos__trilho" id="js-oferecemos-trilho"></div>
-          <div class="oferecemos__pontos" id="js-oferecemos-pontos"></div>
+          <div class="oferecemos__controles">
+            <button type="button" class="oferecemos__seta oferecemos__seta--anterior" id="js-oferece-anterior" aria-label="Serviço anterior">
+              <svg width="16" height="16"><use href="#icon-seta"/></svg>
+            </button>
+            <div class="oferecemos__pontos" id="js-oferecemos-pontos"></div>
+            <button type="button" class="oferecemos__seta oferecemos__seta--proximo" id="js-oferece-proximo" aria-label="Próximo serviço">
+              <svg width="16" height="16"><use href="#icon-seta"/></svg>
+            </button>
+          </div>
         </div>
         <div class="oferecemos__coluna-imagem reveal reveal--direita">
           <div class="blob blob--oferece" aria-hidden="true"></div>
