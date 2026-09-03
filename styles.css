@@ -363,15 +363,18 @@ img.foto-recortada, img.foto-simples{
   background: var(--teal-claro);
   opacity:.5;
 }
-.hero .pata--1{ top:46%; left:4%; }
-.hero .pata--2{ top:43%; right:6%; }
-.hero .osso--hero-1{ top:46%; right:4%; }
-.hero .osso--hero-2{ top:43%; left:6%; }
+/* no mobile o hero é uma coluna só, com o bloco de botões ocupando o
+   meio, então só cabe 1 par (pata + osso) sem ficar colado em botão,
+   texto ou foto. Ficam bem no topo, acima de tudo. O 2º par só entra
+   a partir de 900px, quando o layout vira 2 colunas e sobra espaço. */
+.hero .pata--1{ top:2%; left:4%; }
+.hero .osso--hero-1{ top:2%; right:4%; }
+.hero .pata--2, .hero .osso--hero-2{ display:none; }
 @media (min-width: 900px){
   .hero .pata--1{ top:10%; left:3%; }
-  .hero .pata--2{ top:auto; bottom:14%; right:auto; left:42%; }
+  .hero .pata--2{ display:block; top:auto; bottom:14%; right:auto; left:42%; }
   .hero .osso--hero-1{ top:10%; left:auto; right:3%; }
-  .hero .osso--hero-2{ top:auto; bottom:6%; right:6%; left:auto; }
+  .hero .osso--hero-2{ display:block; top:auto; bottom:6%; right:6%; left:auto; }
 }
 
 .hero__grade{
@@ -616,22 +619,23 @@ img.foto-recortada, img.foto-simples{
 .galeria__carrossel{ margin: 40px 0; }
 .galeria__viewport{ overflow:hidden; }
 .galeria__trilho{
-  display:flex; align-items:center; gap:2%;
-  padding-block: 52px; /* espaço de sobra pra célula ativa crescer sem
+  display:flex; align-items:center; gap:4%;
+  padding-block: 28px; /* espaço de sobra pra célula ativa crescer sem
                            a borda arredondada ser cortada pelo viewport */
   transition: transform .6s cubic-bezier(.22,1,.36,1);
   will-change: transform;
 }
-/* as 3 células têm sempre a MESMA largura de layout (32+32+32+2+2=100%,
-   cabe certinho, sem nenhuma "espiando" na borda). O tamanho visual de
-   cada uma só muda por cima com um scale (a ativa cresce, as outras
-   encolhem um pouco), o que não mexe no layout nem na conta de posição.
-   Nenhum filtro/opacidade diferente entre elas, todas com a mesma cor
-   normal. */
+/* no mobile só 1 foto aparece em destaque por vez, grande, com as
+   vizinhas espiando um pedacinho dos dois lados (dá a sensação de
+   continuidade). A partir de 700px passam a caber 3 de uma vez. O
+   tamanho visual de cada uma muda por cima com um scale (a ativa
+   cresce um pouco, as outras encolhem), o que não mexe no layout nem
+   na conta de posição. Nenhum filtro/opacidade diferente entre elas,
+   todas com a mesma cor normal. */
 .galeria__celula{
-  flex: 0 0 32%;
+  flex: 0 0 76%;
   position:relative;
-  transform: scale(.86);
+  transform: scale(.92);
   transition: transform .6s cubic-bezier(.22,1,.36,1);
 }
 .galeria__celula img{
@@ -639,12 +643,18 @@ img.foto-recortada, img.foto-simples{
   border-radius: var(--raio-card);
   box-shadow: var(--sombra-media);
 }
-.galeria__celula--ativa{ transform: scale(1.14); z-index:2; }
+.galeria__celula--ativa{ transform: scale(1); z-index:2; }
 
 .galeria__rodape{ text-align:center; margin-top:20px; }
 
 @media (prefers-reduced-motion: reduce){
   .galeria__trilho, .galeria__celula{ transition:none; }
+}
+
+@media (min-width: 700px){
+  .galeria__trilho{ gap:2%; padding-block: 52px; }
+  .galeria__celula{ flex: 0 0 32%; transform: scale(.86); }
+  .galeria__celula--ativa{ transform: scale(1.14); }
 }
 
 @media (min-width: 740px){

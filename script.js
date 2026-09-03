@@ -260,7 +260,7 @@ function reiniciarAutoAvancoOferece() {
   clearInterval(ofereceTimer);
   ofereceTimer = setInterval(() => {
     irParaOferece((ofereceAtual + 1) % CONFIG.oferecemos.length);
-  }, 3500);
+  }, 2000);
 }
 
 /* =========================================================
@@ -277,23 +277,31 @@ const GALERIA_INTERVALO = 2000;
 const GALERIA_TRANSICAO_MS = 600;
 
 // mesmos números do CSS (.galeria__celula flex-basis e .galeria__trilho
-// gap). Ficam fixos aqui, e não medidos ao vivo no DOM, de propósito:
-// a célula ativa cresce só visualmente (transform: scale, no CSS), o
-// layout das 3 células é sempre do mesmo tamanho — então a conta de
-// posição nunca desanda, não importa qual esteja em destaque.
-const GALERIA_PCT_CELULA = 0.32;
-const GALERIA_PCT_GAP    = 0.02;
+// gap, nos dois breakpoints). Ficam fixos aqui, e não medidos ao vivo
+// no DOM, de propósito: a célula ativa cresce só visualmente
+// (transform: scale, no CSS), o layout de todas as células é sempre do
+// mesmo tamanho, então a conta de posição nunca desanda, não importa
+// qual esteja em destaque.
+const GALERIA_PCT_CELULA_MOBILE = 0.76; // < 700px: só 1 foto grande, vizinhas espiando
+const GALERIA_PCT_GAP_MOBILE    = 0.04;
+const GALERIA_PCT_CELULA        = 0.32; // >= 700px: 3 fotos de uma vez
+const GALERIA_PCT_GAP           = 0.02;
 
 function galeriaReduzMovimento() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function galeriaEhMobile() {
+  return window.matchMedia("(max-width: 699px)").matches;
+}
+
 function medirCelulaGaleria() {
   const viewport = document.getElementById("js-galeria-viewport");
   const larguraViewport = viewport ? viewport.getBoundingClientRect().width : 0;
+  const mobile = galeriaEhMobile();
   return {
-    largura: larguraViewport * GALERIA_PCT_CELULA,
-    espaco: larguraViewport * GALERIA_PCT_GAP,
+    largura: larguraViewport * (mobile ? GALERIA_PCT_CELULA_MOBILE : GALERIA_PCT_CELULA),
+    espaco: larguraViewport * (mobile ? GALERIA_PCT_GAP_MOBILE : GALERIA_PCT_GAP),
     larguraViewport
   };
 }
