@@ -393,7 +393,7 @@ img.foto-recortada, img.foto-simples{
     background-image: url("assets/fotos/nav-celular.webp");
   }
   .cabecalho__osso{ left:5.9%; right:3.5%; top:41%; bottom:22.5%; }
-  .cabecalho__acoes{ width:100%; justify-content:space-between; gap:0; }
+  .cabecalho__acoes{ justify-content:center; gap:26px; }   /* Agendar e hambúrguer juntos, no centro da placa */
   .cabecalho__acoes .botao{ padding: 4px 12px; font-size:.78rem; }
   html{ scroll-padding-top: calc(100vw * 205 / 1024 + 16px); }
 }
