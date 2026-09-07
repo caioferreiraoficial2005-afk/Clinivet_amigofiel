@@ -276,9 +276,6 @@ img.foto-recortada, img.foto-simples{
   display:flex; align-items:center; justify-content:space-between;
   height: 76px;
 }
-/* âncoras do menu param abaixo do cabeçalho fixo (76px + folga).
-   No desktop o bloco CABEÇALHO-BANNER sobrescreve com a altura do banner. */
-html{ scroll-padding-top: 84px; }
 .marca{ display:flex; align-items:center; }
 .marca__logo{ height:44px; width:auto; display:block; }
 
@@ -341,76 +338,84 @@ html{ scroll-padding-top: 84px; }
 }
 
 /* =====================================================
-   CABEÇALHO-BANNER (teste)
-   A arte 3D "cachorros espiando por cima do osso" vira a nav no
-   desktop. Tudo fica numa linha só dentro do osso: links, telefone
-   e o botão Agendar.
+   CABEÇALHO-BANNER
+   A arte 3D "cachorros espiando por cima do osso" É a nav. As
+   informações ficam na placa lisa do osso, medida em
+   assets/fotos/nav-osso-3.webp (2400x392, 6,12:1): 3,2% a 98,7% na
+   horizontal, 54,1% a 83,7% na vertical. Se a imagem for trocada,
+   remedir antes de mexer nesses valores.
 
-   As porcentagens abaixo NÃO são chute: a placa lisa do osso foi
-   medida em assets/fotos/nav-osso-3.webp (2400x355, 6,76:1) e vai
-   de 3.2% a 98.7% na horizontal e de 59.7% a 92.4% na vertical. Se a
-   imagem for trocada, remedir antes de mexer nesses valores.
-
-   No desktop a nav fica fixa ao rolar (sticky) e sem fundo nenhum: só a
-   arte aparece sobre o conteúdo que passa por baixo.
-
-   Mobile (<900px) segue exatamente como era: banner escondido,
-   cabeçalho compacto de 76px, menu hambúrguer e drawer. O wrapper
-   .cabecalho__osso usa display:contents ali, ou seja, não existe
-   pro layout.
+   Desktop (>=900px): banner de 980px centralizado; links, telefone e
+   Agendar numa linha dentro do osso.
+   Mobile (<900px): o banner é ampliado pra 660px e cortado nas
+   laterais, só o miolo com os cachorros aparece; dentro do osso ficam
+   o Agendar e o hambúrguer, os links seguem no drawer.
+   Nos dois: cabeçalho sticky e sem fundo, só a arte passa por cima do
+   conteúdo. A logo não aparece aqui porque o hero a mostra grande
+   logo abaixo.
    ===================================================== */
-.cabecalho__banner{ display:none; }
-.cabecalho__osso{ display:contents; }
+.cabecalho{
+  padding-top: 8px;           /* sem isso as orelhas encostam no topo da tela */
+  background: transparent;    /* a regra base tem fundo creme + blur */
+  backdrop-filter: none;
+  border-bottom: none;
+  /* corta o banner ampliado do mobile nas laterais. clip, não hidden:
+     hidden viraria contêiner de rolagem e desligaria o sticky */
+  overflow-x: clip;
+}
+.cabecalho__linha{
+  display:block; position:relative; height:auto;
+  padding-inline: 0;   /* as % da placa são medidas na imagem; padding desalinharia */
+}
+/* background-image, não <img>: filtro e alfa funcionam igual e o
+   elemento não entra na árvore de acessibilidade (é decorativo) */
+.cabecalho__banner{
+  display:block; width:100%;
+  aspect-ratio: 5088 / 832;
+  background: url("assets/fotos/nav-osso-3.webp") center / contain no-repeat;
+  /* sombra cinza que segue o contorno da arte: a justa sela a franja do
+     recorte, a aberta dá profundidade sobre o conteúdo */
+  filter: drop-shadow(0 1px 2px rgba(60,60,60,.22)) drop-shadow(0 8px 18px rgba(80,80,80,.22));
+}
+.cabecalho .marca{ display:none; }
+/* a placa do osso: o que fica dentro dela */
+.cabecalho__osso{
+  display:flex; align-items:center; justify-content:center;
+  gap: clamp(20px, 2.8vw, 40px);
+  position:absolute; left:3.2%; right:1.3%; top:55.1%; bottom:17.5%;
+}
+
+@media (max-width: 899px){
+  /* 660px de largura dão ~108px de altura e ~30px de placa. Em telas
+     mais estreitas que 660 o banner vaza dos dois lados (cortado pelo
+     overflow-x do .cabecalho) e só o miolo aparece. */
+  .cabecalho__linha{
+    width: max(100%, 660px); max-width:none;
+    /* centraliza sem transform: transform no ancestral quebraria o
+       drawer position:fixed que mora dentro deste elemento */
+    margin-left: calc(50% - max(100%, 660px) / 2);
+  }
+  .cabecalho__acoes{ gap:14px; }
+  .cabecalho__acoes .botao{ padding: 5px 12px; font-size:.78rem; }
+  html{ scroll-padding-top: calc(max(100vw, 660px) / 6.115 + 16px); }
+}
 
 @media (min-width: 900px){
-  /* Único valor pra ajustar o tamanho do banner. A imagem é 6,12:1:
-     980px de largura dão ~160px de altura (na largura do site, 1180px,
-     dava 193px). As fontes são clamp() em vw, não mudam com isso. */
+  /* Único valor pra ajustar o tamanho do banner no desktop. A imagem é
+     6,12:1: 980px de largura dão ~160px de altura. As fontes são
+     clamp() em vw, não mudam com isso. */
   :root{ --nav-largura: 980px; }
-
-  /* fica fixo ao rolar (position:sticky vem da regra base). Sem fundo,
-     blur ou sombra: rolando, só a arte do osso aparece sobre o conteúdo.
-     Custo do sticky: ~170px permanentes no topo. */
-  .cabecalho{
-    padding-top: 10px;  /* sem a faixa de avisos, as orelhas encostavam no topo */
-    background: transparent;
-    backdrop-filter: none;
-    border-bottom: none;
-  }
-  /* âncoras do menu param abaixo da nav fixa, não escondidas atrás dela:
-     altura do banner (largura x 832/5088) + padding-top + folga */
-  html{ scroll-padding-top: calc(min(var(--nav-largura), 100vw) * 832 / 5088 + 18px); }
-  .cabecalho__linha{
-    display: block; position: relative; height: auto;
-    max-width: var(--nav-largura);
-    padding-inline: 0;   /* as % são medidas na imagem; padding desalinharia */
-  }
-  /* background-image (e não <img>) de propósito: só baixa quando esta
-     media query vale. Um <img> com display:none baixaria no celular. */
-  .cabecalho__banner{
-    display:block; width:100%;
-    aspect-ratio: 5088 / 832;
-    background: url("assets/fotos/nav-osso-3.webp") center / contain no-repeat;
-    /* sombra cinza que segue o contorno da arte (não é caixa): a primeira,
-       justa, sela a franja do recorte; a segunda, aberta, dá profundidade
-       quando o osso passa por cima do conteúdo */
-    filter: drop-shadow(0 1px 2px rgba(60,60,60,.22)) drop-shadow(0 8px 18px rgba(80,80,80,.22));
-  }
-  .cabecalho .marca{ display:none; }  /* a logo grande já vem no hero */
-
-  /* a placa do osso: uma linha com tudo, centralizada */
-  .cabecalho__osso{
-    display:flex; align-items:center; justify-content:center;
-    gap: clamp(20px, 2.8vw, 40px);
-    position:absolute; left:3.2%; right:1.3%; top:55.1%; bottom:17.5%;
-  }
+  .cabecalho{ padding-top: 10px; }
+  .cabecalho__linha{ max-width: var(--nav-largura); }
   .cabecalho .nav{ position:static; }
   .cabecalho .nav ul{ gap: clamp(14px, 1.9vw, 26px); }
   .cabecalho .nav a{ font-size: clamp(.8rem, 1.05vw, .92rem); }
   .cabecalho__acoes{ gap: clamp(10px, 1.3vw, 16px); }
   .cabecalho__telefone{ display:flex; font-size: clamp(.78rem, 1vw, .9rem); }
-  /* a placa tem ~53px de altura a 1180px e ~40px a 900px: o botão encolhe junto */
+  /* a placa tem ~44px de altura a 980px: o botão encolhe junto em telas menores */
   .cabecalho__acoes .botao{ padding: clamp(6px, .8vw, 10px) clamp(13px, 1.6vw, 20px); font-size: clamp(.78rem, 1vw, .88rem); }
+  /* âncoras do menu param abaixo da nav fixa: altura do banner + padding + folga */
+  html{ scroll-padding-top: calc(min(var(--nav-largura), 100vw) * 832 / 5088 + 18px); }
 }
 
 @media (prefers-reduced-motion: reduce){
