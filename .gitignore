@@ -1,3 +1,8 @@
 .dist/
 .DS_Store
 Thumbs.db
+
+# Originais pesados do banner da nav (fontes do recorte; o site usa so nav-osso-3.webp)
+assets/fotos/nav.png
+assets/fotos/nav-osso-2.jpg
+assets/fotos/nav-osso-sem-fundo.png

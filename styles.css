@@ -56,7 +56,7 @@
   --branco:  #FFFFFF;
   --linha:   #F0DFC9;
 
-  --rodape: #2E1E14;
+  --rodape: var(--teal); /* rodape azul; era o marrom #2E1E14 */
 
   --fonte-display: "Ginora Sans", "Poppins", sans-serif;
   --fonte-corpo:   "Poppins", sans-serif;
@@ -83,7 +83,12 @@ body{
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* corta o transbordo lateral (balanço no mobile) SEM virar contêiner de
+     rolagem: overflow-x:hidden no body desliga o position:sticky do
+     cabeçalho no Chrome. 'clip' não tem esse efeito; 'hidden' fica só
+     como fallback pra navegador antigo. */
   overflow-x: hidden;
+  overflow-x: clip;
   padding-bottom: 78px; /* espaço pra barra fixa de whatsapp no mobile */
 }
 img{ max-width:100%; display:block; }
@@ -159,10 +164,17 @@ svg{ display:block; }
 
 .titulo-secao{
   font-size: clamp(1.7rem, 4.2vw, 2.4rem);
-  font-weight: 500;
+  font-weight: 700; /* Bold real da Ginora Sans (GinoraSans-Bold.otf), não sintético */
   margin: 0 0 14px;
 }
 .titulo-secao--centro{ text-align:center; }
+/* Seções sobre o creme ("Nossos profissionais", "Quem já veio",
+   "Onde estamos"): a parte reta do título vai de preto pra laranja.
+   A palavra em destaque não é afetada, .destaque-teal aplica a cor
+   direto no <span>. */
+.profissionais .titulo-secao,
+.depoimentos .titulo-secao,
+.localizacao .titulo-secao{ color: var(--laranja); }
 
 .botao{
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
@@ -252,34 +264,6 @@ img.foto-recortada, img.foto-simples{
 }
 
 /* =====================================================
-   FAIXA DE AVISOS (topo da página, antes do cabeçalho)
-   ===================================================== */
-.faixa-promo{
-  background: var(--teal);
-  color:#fff;
-  text-align:center;
-  font-weight:700;
-  font-size:.82rem;
-  position:relative;
-  z-index:110;
-}
-.faixa-promo__trilho{
-  position:relative;
-  min-height: 38px;
-  display:flex; align-items:center; justify-content:center;
-}
-.promo-slide{
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; visibility:hidden;
-  transition: opacity .4s ease;
-}
-.promo-slide.ativo{ opacity:1; visibility:visible; }
-@media (prefers-reduced-motion: reduce){
-  .promo-slide{ transition:none; }
-}
-
-/* =====================================================
    CABEÇALHO
    ===================================================== */
 .cabecalho{
@@ -292,6 +276,9 @@ img.foto-recortada, img.foto-simples{
   display:flex; align-items:center; justify-content:space-between;
   height: 76px;
 }
+/* âncoras do menu param abaixo do cabeçalho fixo (76px + folga).
+   No desktop o bloco CABEÇALHO-BANNER sobrescreve com a altura do banner. */
+html{ scroll-padding-top: 84px; }
 .marca{ display:flex; align-items:center; }
 .marca__logo{ height:44px; width:auto; display:block; }
 
@@ -299,11 +286,17 @@ img.foto-recortada, img.foto-simples{
 .nav a{
   font-weight:600; color:var(--tinta); font-size:.95rem;
   position:relative; padding-bottom:4px;
+  display:inline-block;   /* transform não pega em elemento inline */
+  transition: transform .18s ease, text-shadow .18s ease;
 }
-.nav a.ativo::after{
+.nav a:hover{ transform:translateY(-2px); text-shadow: 0 3px 8px rgba(58,42,31,.28); }
+/* sublinhado laranja: fixo no link ativo, cresce a partir do centro no hover */
+.nav a::after{
   content:""; position:absolute; left:0; right:0; bottom:-2px; height:3px;
   background:var(--laranja); border-radius:10px;
+  transform:scaleX(0); transition: transform .22s ease;
 }
+.nav a.ativo::after, .nav a:hover::after{ transform:scaleX(1); }
 
 .cabecalho__acoes{ display:flex; align-items:center; gap:16px; }
 .cabecalho__telefone{
@@ -346,8 +339,82 @@ img.foto-recortada, img.foto-simples{
 @media (min-width: 900px){
   .nav__abrir{ display:none; }
 }
+
+/* =====================================================
+   CABEÇALHO-BANNER (teste)
+   A arte 3D "cachorros espiando por cima do osso" vira a nav no
+   desktop. Tudo fica numa linha só dentro do osso: links, telefone
+   e o botão Agendar.
+
+   As porcentagens abaixo NÃO são chute: a placa lisa do osso foi
+   medida em assets/fotos/nav-osso-3.webp (2400x355, 6,76:1) e vai
+   de 3.2% a 98.7% na horizontal e de 59.7% a 92.4% na vertical. Se a
+   imagem for trocada, remedir antes de mexer nesses valores.
+
+   No desktop a nav fica fixa ao rolar (sticky) e sem fundo nenhum: só a
+   arte aparece sobre o conteúdo que passa por baixo.
+
+   Mobile (<900px) segue exatamente como era: banner escondido,
+   cabeçalho compacto de 76px, menu hambúrguer e drawer. O wrapper
+   .cabecalho__osso usa display:contents ali, ou seja, não existe
+   pro layout.
+   ===================================================== */
+.cabecalho__banner{ display:none; }
+.cabecalho__osso{ display:contents; }
+
+@media (min-width: 900px){
+  /* Único valor pra ajustar o tamanho do banner. A imagem é 6,12:1:
+     980px de largura dão ~160px de altura (na largura do site, 1180px,
+     dava 193px). As fontes são clamp() em vw, não mudam com isso. */
+  :root{ --nav-largura: 980px; }
+
+  /* fica fixo ao rolar (position:sticky vem da regra base). Sem fundo,
+     blur ou sombra: rolando, só a arte do osso aparece sobre o conteúdo.
+     Custo do sticky: ~170px permanentes no topo. */
+  .cabecalho{
+    padding-top: 10px;  /* sem a faixa de avisos, as orelhas encostavam no topo */
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
+  }
+  /* âncoras do menu param abaixo da nav fixa, não escondidas atrás dela:
+     altura do banner (largura x 832/5088) + padding-top + folga */
+  html{ scroll-padding-top: calc(min(var(--nav-largura), 100vw) * 832 / 5088 + 18px); }
+  .cabecalho__linha{
+    display: block; position: relative; height: auto;
+    max-width: var(--nav-largura);
+    padding-inline: 0;   /* as % são medidas na imagem; padding desalinharia */
+  }
+  /* background-image (e não <img>) de propósito: só baixa quando esta
+     media query vale. Um <img> com display:none baixaria no celular. */
+  .cabecalho__banner{
+    display:block; width:100%;
+    aspect-ratio: 5088 / 832;
+    background: url("assets/fotos/nav-osso-3.webp") center / contain no-repeat;
+    /* sombra cinza que segue o contorno da arte (não é caixa): a primeira,
+       justa, sela a franja do recorte; a segunda, aberta, dá profundidade
+       quando o osso passa por cima do conteúdo */
+    filter: drop-shadow(0 1px 2px rgba(60,60,60,.22)) drop-shadow(0 8px 18px rgba(80,80,80,.22));
+  }
+  .cabecalho .marca{ display:none; }  /* a logo grande já vem no hero */
+
+  /* a placa do osso: uma linha com tudo, centralizada */
+  .cabecalho__osso{
+    display:flex; align-items:center; justify-content:center;
+    gap: clamp(20px, 2.8vw, 40px);
+    position:absolute; left:3.2%; right:1.3%; top:55.1%; bottom:17.5%;
+  }
+  .cabecalho .nav{ position:static; }
+  .cabecalho .nav ul{ gap: clamp(14px, 1.9vw, 26px); }
+  .cabecalho .nav a{ font-size: clamp(.8rem, 1.05vw, .92rem); }
+  .cabecalho__acoes{ gap: clamp(10px, 1.3vw, 16px); }
+  .cabecalho__telefone{ display:flex; font-size: clamp(.78rem, 1vw, .9rem); }
+  /* a placa tem ~53px de altura a 1180px e ~40px a 900px: o botão encolhe junto */
+  .cabecalho__acoes .botao{ padding: clamp(6px, .8vw, 10px) clamp(13px, 1.6vw, 20px); font-size: clamp(.78rem, 1vw, .88rem); }
+}
+
 @media (prefers-reduced-motion: reduce){
-  .nav, .nav__fundo{ transition:none; }
+  .nav, .nav__fundo, .nav a, .nav a::after{ transition:none; }
 }
 
 /* =====================================================
@@ -439,8 +506,13 @@ img.foto-recortada, img.foto-simples{
 }
 .secao-laranja .eyebrow--laranja{ color:#fff; }
 .secao-laranja .eyebrow--teal{ color:#fff; }
-.secao-laranja .destaque-teal{ color: var(--grafite); }
+/* .destaque-teal NÃO é sobrescrito aqui: "carinho" (Sobre) e "trabalhos"
+   (Galeria) usam o teal da paleta, igual ao resto da página. */
 .secao-laranja .servico-item__icone{ color:#fff; }
+/* parágrafo de descrição do Sobre em branco (o eyebrow acima já era
+   branco). O checklist não precisa de regra: herda --tinta, que é
+   branco dentro do bloco laranja. */
+.secao-laranja .sobre__texto p:not(.eyebrow){ color:#fff; }
 .secao-laranja .checklist__icone--laranja{ background:#fff; color: var(--laranja-escuro); }
 .secao-laranja .checklist__icone--teal{ background:#fff; color: var(--teal-escuro); }
 .secao-laranja .link-discreto{ color:#fff; border-bottom-color: rgba(255,255,255,.45); }
@@ -454,6 +526,14 @@ img.foto-recortada, img.foto-simples{
 }
 .secao-teal .eyebrow--laranja{ color:#fff; }
 .secao-teal .destaque-teal{ color:#fff; }
+/* título da seção ("O que a gente") e o título de cada serviço do
+   carrossel em laranja, no lugar do preto. "oferece" continua branco:
+   .destaque-teal acima aplica a cor direto no <span>, então ele não
+   herda o laranja do <h2>. */
+.secao-teal .titulo-secao{ color: var(--laranja); }
+.secao-teal .oferece-slide h3{ color: var(--laranja); }
+/* descrição de cada serviço em branco e negrito, no lugar do preto normal */
+.secao-teal .oferece-slide p{ color:#fff; font-weight:700; }
 
 /* =====================================================
    FAIXA DE SERVIÇOS (lista discreta, sem cartões)
@@ -751,7 +831,15 @@ img.foto-recortada, img.foto-simples{
 /* =====================================================
    RODAPÉ
    ===================================================== */
-.rodape{ position:relative; overflow:hidden; background: var(--rodape); color: rgba(255,255,255,.75); padding: 64px 0 0; }
+.rodape{
+  position:relative; overflow:hidden;
+  background: var(--rodape);
+  color:#fff;
+  /* sombra leve atras das letras: herda pros filhos e segura a leitura
+     do texto branco sobre o azul claro */
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  padding: 64px 0 0;
+}
 .rodape .pata--rodape{ color:#fff; opacity:.06; top:-10%; right:-4%; }
 .rodape .osso--rodape{ color:#fff; opacity:.06; top:-10%; left:-4%; }
 
@@ -762,29 +850,30 @@ img.foto-recortada, img.foto-simples{
 }
 .rodape__coluna h4{ color:#fff; font-family:var(--fonte-corpo); font-size:1rem; font-weight:700; margin-bottom:18px; }
 .rodape__coluna ul{ display:flex; flex-direction:column; gap:11px; }
-.rodape__coluna a{ font-size:.92rem; }
+.rodape__coluna a{ font-size:.92rem; font-weight:600; }
 .rodape__coluna a:hover{ color:#fff; }
 
-.marca--rodape{ display:flex; align-items:center; margin-bottom:14px; }
-.marca__logo--rodape{ height:40px; }
-.rodape__marca p{ font-size:.88rem; max-width:30ch; margin-bottom:18px; }
+.marca--rodape{ display:flex; align-items:center; margin-bottom:20px; }
+/* logo do rodape bem maior que os 40px antigos (proporcao 2,72:1, entao
+   104px de altura da ~283px de largura e ainda cabe na coluna) */
+.marca__logo--rodape{ height: clamp(72px, 8vw, 104px); }
 
 .rodape__redes{ display:flex; gap:10px; }
 .rodape__redes a{
   width:36px; height:36px; border-radius:50%;
-  background: rgba(255,255,255,.08);
+  background: rgba(255,255,255,.22);
   display:flex; align-items:center; justify-content:center;
   color:#fff;
 }
-.rodape__redes a:hover{ background: var(--teal); }
+.rodape__redes a:hover{ background: var(--laranja); } /* era var(--teal): azul sobre azul sumia */
 
 .horarios--rodape{ border-top:none; }
-.horarios--rodape li{ border-bottom: 1px solid rgba(255,255,255,.1); font-size:.88rem; color:rgba(255,255,255,.8); font-weight:600; }
-.horarios--rodape li span:last-child{ color: rgba(255,255,255,.6); font-weight:400; }
+.horarios--rodape li{ border-bottom: 1px solid rgba(255,255,255,.28); font-size:.88rem; color:#fff; font-weight:600; }
+.horarios--rodape li span:last-child{ color: rgba(255,255,255,.88); font-weight:400; }
 
 .rodape__base{
   position:relative; z-index:1;
-  border-top:1px solid rgba(255,255,255,.1);
+  border-top:1px solid rgba(255,255,255,.28);
   text-align:center; padding: 20px 0; font-size:.82rem;
 }
 

@@ -32,13 +32,6 @@ const CONFIG = {
   notaGoogle: 4.4,
   qtdAvaliacoes: 142,
 
-  // faixa fina que gira no topo da página, acima do cabeçalho
-  promocoes: [
-    "🩺 Consultas, vacinas e cirurgias",
-    "📅 Atendimento com hora marcada",
-    "💬 Fale com a gente pelo WhatsApp"
-  ],
-
   // faixa logo abaixo do hero, 4 serviços em destaque
   servicos: [
     { icone: "consulta",   titulo: "Consultas",   texto: "Avaliação completa com veterinário" },
@@ -156,11 +149,12 @@ const OFERECE_INTERVALO = 6000;
    contextual à seção em que a pessoa estava.
    ========================================================= */
 const MENSAGENS = {
-  header:       () => `Oi! Gostaria de agendar um horário para o meu pet no ${CONFIG.nome}.`,
-  hero:         () => `Oi! Vi o site do ${CONFIG.nome} e quero agendar um horário para o meu pet.`,
-  rodape:       () => `Oi! Vim pelo site do ${CONFIG.nome} e quero agendar um horário.`,
-  mobile:       () => `Oi! Vim pelo site do ${CONFIG.nome} e quero agendar um horário.`,
-  profissionais: () => `Oi! Vi o site do ${CONFIG.nome} e queria marcar um horário com a equipe.`
+  header:       () => `Olá! Vim pelo site e gostaria de agendar um horário.`,
+  hero:         () => `Olá! Vim pelo site e gostaria de agendar um horário.`,
+  servicos:     () => `Olá! Vim pelo site e queria saber mais sobre os serviços.`,
+  profissionais: () => `Olá! Vim pelo site e gostaria de agendar uma consulta.`,
+  rodape:       () => `Olá! Vim pelo site e gostaria de agendar um horário.`,
+  mobile:       () => `Olá! Vim pelo site da ${CONFIG.nome}.`
 };
 
 /** Monta um link wa.me pronto com o texto já preenchido. */
@@ -175,29 +169,6 @@ const PASTEIS = ["teal-claro", "pessego-claro", "amarelo-claro", "laranja-claro"
 
 function iconeSvg(nome, tamanho = 24) {
   return `<svg width="${tamanho}" height="${tamanho}"><use href="#icon-${nome}"/></svg>`;
-}
-
-let promoAtual = 0;
-let promoTimer = null;
-
-function renderFaixaPromo() {
-  const trilho = document.getElementById("js-promo-trilho");
-  if (!trilho || !CONFIG.promocoes || !CONFIG.promocoes.length) return;
-
-  trilho.innerHTML = CONFIG.promocoes.map((texto, i) => `
-    <span class="promo-slide${i === 0 ? " ativo" : ""}">${texto}</span>
-  `).join("");
-
-  const reduzMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduzMovimento || CONFIG.promocoes.length < 2) return;
-
-  clearInterval(promoTimer);
-  promoTimer = setInterval(() => {
-    promoAtual = (promoAtual + 1) % CONFIG.promocoes.length;
-    trilho.querySelectorAll(".promo-slide").forEach((el, i) => {
-      el.classList.toggle("ativo", i === promoAtual);
-    });
-  }, 3800);
 }
 
 function renderServicos() {
@@ -509,7 +480,6 @@ function renderTextosGerais() {
   // nome e subtítulo não aparecem mais em texto no cabeçalho/rodapé.
   // a logo (CONFIG.logo, via .js-logo-real) já vem com o nome escrito
   document.getElementById("js-nome-copyright").textContent = CONFIG.nome;
-  document.getElementById("js-slogan-rodape").textContent = CONFIG.slogan;
 
   document.getElementById("js-endereco").textContent = CONFIG.endereco;
 
@@ -583,7 +553,7 @@ function iniciarMenuMobile() {
    tem link no menu de propósito, quando ela cruza a faixa o menu só
    mantém o último item ativo. */
 function iniciarNavAtiva() {
-  const secoes = ["inicio", "servicos", "profissionais", "sobre", "localizacao"]
+  const secoes = ["inicio", "sobre", "servicos", "profissionais", "localizacao"]
     .map(id => document.getElementById(id))
     .filter(Boolean);
   const links = document.querySelectorAll(".nav a");
@@ -637,7 +607,6 @@ function iniciarRevelacao() {
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   renderTextosGerais();
-  renderFaixaPromo();
   renderServicos();
   renderOferecemos();
   renderGaleria();

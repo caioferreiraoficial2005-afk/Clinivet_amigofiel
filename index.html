@@ -124,37 +124,39 @@
 
 <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
-<!-- ===================== FAIXA DE AVISOS ===================== -->
-<div class="faixa-promo" aria-label="Avisos">
-  <div class="container faixa-promo__trilho" id="js-promo-trilho"></div>
-</div>
-
 <!-- ===================== CABEÇALHO ===================== -->
 <header class="cabecalho" id="topo">
   <div class="container cabecalho__linha">
+    <!-- TESTE: a arte dos cachorros com o osso vira a própria nav no desktop.
+         A imagem é só decorativa (alt vazio); os links de verdade são os
+         de sempre, só que posicionados dentro do osso pelo CSS. No mobile
+         ela some e volta o cabeçalho compacto com hambúrguer. -->
+    <div class="cabecalho__banner" aria-hidden="true"></div>
+
     <a href="#topo" class="marca">
       <img class="marca__logo js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
     </a>
 
+    <div class="cabecalho__osso"><!-- no desktop: a "placa" do osso; no mobile: display:contents -->
     <nav class="nav" id="js-nav">
       <button class="nav__fechar" id="js-nav-fechar" aria-label="Fechar menu">
         <svg width="22" height="22"><use href="#icon-fechar"/></svg>
       </button>
       <ul>
         <li><a href="#inicio" class="ativo">Início</a></li>
+        <li><a href="#sobre">Sobre</a></li>
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#profissionais">Equipe</a></li>
-        <li><a href="#sobre">Sobre</a></li>
         <li><a href="#localizacao">Contato</a></li>
       </ul>
     </nav>
 
     <div class="cabecalho__acoes">
-      <a href="#" id="js-telefone-header" class="cabecalho__telefone">
+      <a href="tel:+5582988470300" id="js-telefone-header" class="cabecalho__telefone">
         <svg width="16" height="16"><use href="#icon-telefone"/></svg>
-        <span>(82) 3033-1234</span>
+        <span>(82) 98847-0300</span>
       </a>
-      <a href="#" class="botao botao-laranja botao--sm js-zap" data-zap="header">
+      <a href="https://wa.me/5582988470300?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio." class="botao botao-laranja botao--sm js-zap" data-zap="header">
         <svg width="16" height="16"><use href="#icon-pata"/></svg>
         Agendar
       </a>
@@ -162,6 +164,7 @@
         <svg width="24" height="24"><use href="#icon-menu"/></svg>
       </button>
     </div>
+    </div><!-- /cabecalho__osso -->
   </div>
   <div class="nav__fundo" id="js-nav-fundo"></div>
 </header>
@@ -189,7 +192,7 @@
           que trata seu pet como se fosse <span class="destaque-teal-solido">da família</span>.
         </h1>
         <div class="hero__acoes">
-          <a href="#" class="botao botao-laranja js-zap" data-zap="hero">
+          <a href="https://wa.me/5582988470300?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio." class="botao botao-laranja js-zap" data-zap="hero">
             <svg width="17" height="17"><use href="#icon-pata"/></svg>
             Agendar horário
           </a>
@@ -216,14 +219,17 @@
   </div>
 
   <!-- ===================== FAIXA DE SERVIÇOS ===================== -->
-  <section class="servicos secao-laranja" id="servicos" aria-label="Nossos serviços">
+  <!-- A âncora #sobre do menu fica AQUI, no topo do bloco laranja: pro
+       visitante, "Sobre" é a faixa de 4 cards + o texto "Cuidado clínico
+       com carinho" logo abaixo (a section .sobre não tem id de propósito). -->
+  <section class="servicos secao-laranja" id="sobre" aria-label="Nossos serviços">
     <div class="container">
       <ul class="servicos__grade reveal" id="js-servicos"></ul>
     </div>
   </section>
 
   <!-- ===================== SOBRE ===================== -->
-  <section class="sobre secao-laranja" id="sobre">
+  <section class="sobre secao-laranja">
     <svg class="pata pata--3" width="54" height="54" aria-hidden="true"><use href="#icon-pata"/></svg>
     <svg class="pata pata--3b" width="40" height="40" aria-hidden="true"><use href="#icon-pata"/></svg>
     <svg class="pata osso osso--sobre-1" width="44" height="44" aria-hidden="true"><use href="#icon-osso"/></svg>
@@ -267,7 +273,7 @@
   </div>
 
   <!-- ===================== O QUE OFERECEMOS ===================== -->
-  <section class="oferecemos secao-teal">
+  <section class="oferecemos secao-teal" id="servicos">
     <div class="container">
       <svg class="pata pata--esquerda-1" width="56" height="56" aria-hidden="true"><use href="#icon-pata"/></svg>
       <svg class="pata pata--direita-1" width="46" height="46" aria-hidden="true"><use href="#icon-pata"/></svg>
@@ -317,7 +323,7 @@
       <ul class="profissionais__grade" id="js-profissionais"></ul>
 
       <div class="profissionais__cta reveal">
-        <a href="#" class="botao botao-laranja botao--grande js-zap" data-zap="profissionais" id="js-zap-profissionais">
+        <a href="https://wa.me/5582988470300?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20uma%20consulta." class="botao botao-laranja botao--grande js-zap" data-zap="profissionais" id="js-zap-profissionais">
           <svg width="18" height="18"><use href="#icon-whatsapp"/></svg>
           Agendar no WhatsApp
         </a>
@@ -384,7 +390,7 @@
   <section class="localizacao" id="localizacao">
     <div class="container localizacao__grade">
       <div class="localizacao__mapa-caixa reveal reveal--esquerda">
-        <iframe id="js-mapa" title="Mapa até a Amigo Fiel" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe id="js-mapa" title="Mapa até a Amigo Fiel" src="https://www.google.com/maps?q=-9.5656293,-35.7484559&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 
       <div class="localizacao__info reveal reveal--direita">
@@ -398,7 +404,7 @@
           </li>
           <li>
             <span class="localizacao__icone"><svg width="17" height="17"><use href="#icon-telefone"/></svg></span>
-            <a href="#" id="js-telefone"></a>
+            <a href="tel:+5582988470300" id="js-telefone">(82) 98847-0300</a>
           </li>
         </ul>
 
@@ -408,7 +414,7 @@
         </h3>
         <ul class="horarios" id="js-horarios"></ul>
 
-        <a href="#" class="botao botao-teal" id="js-link-mapa" target="_blank" rel="noopener">
+        <a href="https://maps.google.com/?q=-9.5656293,-35.7484559" class="botao botao-teal" id="js-link-mapa" target="_blank" rel="noopener">
           <svg width="17" height="17"><use href="#icon-pin"/></svg>
           Como chegar
         </a>
@@ -427,11 +433,10 @@
       <a href="#topo" class="marca marca--rodape">
         <img class="marca__logo marca__logo--rodape js-logo-real" src="assets/fotos/logo-amigo-fiel-completa.png" alt="Amigo Fiel · Clínica Veterinária e Pet Shop">
       </a>
-      <p id="js-slogan-rodape"></p>
       <div class="rodape__redes">
         <a href="#" id="js-rodape-instagram" aria-label="Instagram" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#icon-instagram"/></svg></a>
         <a href="#" id="js-rodape-facebook" aria-label="Facebook" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#icon-facebook"/></svg></a>
-        <a href="#" id="js-rodape-whatsapp" aria-label="WhatsApp" class="js-zap" data-zap="rodape"><svg width="18" height="18"><use href="#icon-whatsapp"/></svg></a>
+        <a href="https://wa.me/5582988470300?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20um%20hor%C3%A1rio." id="js-rodape-whatsapp" aria-label="WhatsApp" class="js-zap" data-zap="rodape"><svg width="18" height="18"><use href="#icon-whatsapp"/></svg></a>
       </div>
     </div>
 
@@ -439,9 +444,9 @@
       <h4>Links rápidos</h4>
       <ul>
         <li><a href="#topo">Início</a></li>
+        <li><a href="#sobre">Sobre</a></li>
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#profissionais">Equipe</a></li>
-        <li><a href="#sobre">Sobre</a></li>
         <li><a href="#localizacao">Contato</a></li>
       </ul>
     </nav>
@@ -464,7 +469,7 @@
 
 <!-- ===================== BARRA FIXA WHATSAPP (mobile) ===================== -->
 <div class="barra-zap">
-  <a href="#" class="botao botao-laranja js-zap" data-zap="mobile">
+  <a href="https://wa.me/5582988470300?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Amigo%20Fiel." class="botao botao-laranja js-zap" data-zap="mobile">
     <svg width="18" height="18"><use href="#icon-whatsapp"/></svg>
     Falar no WhatsApp
   </a>
