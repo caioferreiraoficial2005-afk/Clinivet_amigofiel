@@ -386,18 +386,15 @@ img.foto-recortada, img.foto-simples{
 }
 
 @media (max-width: 899px){
-  /* 660px de largura dão ~108px de altura e ~30px de placa. Em telas
-     mais estreitas que 660 o banner vaza dos dois lados (cortado pelo
-     overflow-x do .cabecalho) e só o miolo aparece. */
-  .cabecalho__linha{
-    width: max(100%, 660px); max-width:none;
-    /* centraliza sem transform: transform no ancestral quebraria o
-       drawer position:fixed que mora dentro deste elemento */
-    margin-left: calc(50% - max(100%, 660px) / 2);
-  }
-  .cabecalho__acoes{ gap:14px; }
+  /* banner na largura da tela: num celular de 390px dá ~64px de altura,
+     osso inteiro com os dois nós e cachorros pequenos no meio. A placa
+     fica com ~18px, então Agendar e hambúrguer vão pros NÓS (esquerda
+     e direita), onde o osso é mais alto e não tem cachorro em cima; o
+     botão transborda 2-3px da placa e lê como "apoiado no osso". */
+  .cabecalho__osso{ left:4%; right:4%; }
+  .cabecalho__acoes{ width:100%; justify-content:space-between; gap:0; }
   .cabecalho__acoes .botao{ padding: 5px 12px; font-size:.78rem; }
-  html{ scroll-padding-top: calc(max(100vw, 660px) / 6.115 + 16px); }
+  html{ scroll-padding-top: calc(100vw / 6.115 + 16px); }
 }
 
 @media (min-width: 900px){
