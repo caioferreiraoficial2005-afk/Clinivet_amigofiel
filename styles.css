@@ -386,15 +386,19 @@ img.foto-recortada, img.foto-simples{
 }
 
 @media (max-width: 899px){
-  /* banner na largura da tela: num celular de 390px dá ~64px de altura,
-     osso inteiro com os dois nós e cachorros pequenos no meio. A placa
-     fica com ~18px, então Agendar e hambúrguer vão pros NÓS (esquerda
-     e direita), onde o osso é mais alto e não tem cachorro em cima; o
-     botão transborda 2-3px da placa e lê como "apoiado no osso". */
-  .cabecalho__osso{ left:4%; right:4%; }
+  /* Arte própria pro celular: 3 cachorros e osso grosso, 5:1
+     (assets/fotos/nav-celular.webp, 1024x205, chroma key do JPG verde).
+     Placa lisa medida: 5,9% a 96,5% na horizontal, 40% a 76% na
+     vertical. Num celular de 390px: banner de 78px, placa de ~29px,
+     então Agendar e hambúrguer cabem DENTRO dela. */
+  .cabecalho__banner{
+    aspect-ratio: 1024 / 205;
+    background-image: url("assets/fotos/nav-celular.webp");
+  }
+  .cabecalho__osso{ left:5.9%; right:3.5%; top:41%; bottom:22.5%; }
   .cabecalho__acoes{ width:100%; justify-content:space-between; gap:0; }
-  .cabecalho__acoes .botao{ padding: 5px 12px; font-size:.78rem; }
-  html{ scroll-padding-top: calc(100vw / 6.115 + 16px); }
+  .cabecalho__acoes .botao{ padding: 4px 12px; font-size:.78rem; }
+  html{ scroll-padding-top: calc(100vw * 205 / 1024 + 16px); }
 }
 
 @media (min-width: 900px){
